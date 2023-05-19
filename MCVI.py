@@ -20,7 +20,7 @@ E=np.linspace(10**6,1.5*10**7, 3)
 #E=np.linspace(1,9*10**6, 50)
 
 
-d=5*10**-3/100
+d=5*10**-3/50
 n=1
 
 k=1.38*10**-23
@@ -312,8 +312,9 @@ while l != len(E):
 	mfp=[]
 	xd=np.array([0])
 	x_del=[0]
+	alp=[]
 	
-	while counter != 300:
+	while counter != 500:
 
 		energy=np.array([0.00000001])
 		#vd=[np.sqrt(2*(energy[-1]*electroncharge)/me)]
@@ -367,8 +368,9 @@ while l != len(E):
 			#lamda=1/(n_a*((hest(energy[-1])+tion(2, energy[-1]))))
 			#lamda=1/(n_a*((hest(energy[-1]))))
 			#lamda=1/(n_a*((np.pi*(180*10**-12)**2)))
-			ind=np.random.uniform(-1, 1)
+			#ind=np.random.uniform(-1, 1)
 		
+			ind=-1
 		
 			#print(x[-1])
 			
@@ -400,12 +402,12 @@ while l != len(E):
 			
 			tt=(iterr(xf, yf, zf, xd1, yd1, zd1, xd2, yd2, zd2, vxf, vyf, vzf, delt, h))
 		
-			
+			'''
 			if tt[0]/d>1.05:
 			
-				#counter=counter-1
+				counter=counter-1
 				break		
-			
+			'''
 			vx=np.append(vx,tt[3])
 		
 			vy=np.append(vy, tt[4])
@@ -448,14 +450,15 @@ while l != len(E):
 		
 			ttau=ttau+(me*abs(v[-1]-v[-2])/(electroncharge*E[l]))
 			
-			h=me/(electroncharge*E[0])*0.1
+			h=me*abs(v[-1]-v[-2])/(electroncharge*E[0])*0.001
 			
 			
 			if inelaio[-1]>0:
 			
 				ion.append(inelaio[-1])
 		
-		
+			xl=ttau/i
+			
 			#print(round(x[-1]*100/d),"		",inelaio[-1])
 		
 			#print((inelaio[-1]/i)*1/(100*lamda))
@@ -465,7 +468,7 @@ while l != len(E):
 		
 		counter+=1	
 
-		xl=ttau/i
+		
 	
 		time.append(xl)
 
@@ -473,7 +476,9 @@ while l != len(E):
 	
 		vd.append(veld)
 	
-		xll=(vd[-1])*10**7*np.mean(time)
+		xll=(vd[-1])*10**7*np.mean(time)/i
+		
+		#print(i)
 		
 		A=(1/xll)
 	
@@ -481,13 +486,15 @@ while l != len(E):
 	
 		#print(vd[-1])
 	
-		#alphat=((inelaio[-1]/i)/(xll))*(10**-2)
+		alphat=((np.mean(ion))/(d))*(10**-2)
+		
+		alp.append(alphat)
 	
-		alphat=((np.mean(ion)/i)/(xll))*(10**-2)
+		#alphat=((np.mean(ion)/i)/(xll))*(10**-2)
 	
 		#alphat=A*np.exp(-B)
 	
-		print(round(E[l]/100),"		",alphat,"	", counter,"	",vd[-1])
+		print(round(E[l]/100),"		",np.mean(alp),"	", counter,"	",np.mean(vd))
 	
 	l+=1
 
